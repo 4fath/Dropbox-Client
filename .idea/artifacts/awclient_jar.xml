@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="awclient:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/awclient_jar</output-path>
+    <root id="archive" name="awclient.jar">
+      <element id="module-output" name="awclient" />
+    </root>
+  </artifact>
+</component>
