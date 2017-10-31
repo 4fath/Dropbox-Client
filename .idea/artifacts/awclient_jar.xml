@@ -3,6 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/awclient_jar</output-path>
     <root id="archive" name="awclient.jar">
       <element id="module-output" name="awclient" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.7.4/jackson-core-2.7.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/dropbox/core/dropbox-core-sdk/3.0.5/dropbox-core-sdk-3.0.5.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
