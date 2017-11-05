@@ -11,13 +11,19 @@ public class App {
 
     public static void main(String[] args) throws IOException, DbxException {
 
-        Command command = CommandFactory.getCommand(args);
-        if (command != null) {
-            command.execute();
-        } else {
-            System.out.println("unsupported command : " + args[0]);
-            System.exit(1);
+        if (args != null && args.length >= 2){
+            Command command = CommandFactory.getCommand(args);
+            if (command != null) {
+                command.execute();
+            } else if(args[0] != null) {
+                System.out.println(String.format("Unsupported command : %s.", args[0]));
+            }else{
+                System.out.println("No command found.");
+            }
+        }else {
+            System.out.println("No command found.");
         }
+
 
     }
 }

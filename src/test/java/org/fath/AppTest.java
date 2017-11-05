@@ -1,37 +1,98 @@
 package org.fath;
 
 import com.dropbox.core.DbxException;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.contrib.java.lang.system.ExpectedSystemExit;
+import org.junit.rules.ExpectedException;
 
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest extends TestCase {
+public class AppTest  {
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest(String testName) {
-        super(testName);
+    private static final String EOL = System.getProperty("line.separator");
+
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
+
+
+    @Before
+    public void setUp() {
+
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-        return new TestSuite(AppTest.class);
+    @Test
+    public void test_not_enter_a_command() throws Exception{
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream console = System.out;
+        try {
+            System.setOut(new PrintStream(bytes));
+            App.main(new String[]{});
+        } finally {
+            System.setOut(console);
+        }
+        assertEquals(String.format("No command found.%s",EOL), bytes.toString());
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testAuth() throws IOException, DbxException {
-        assertTrue(true);
+    @Test
+    public void test_enter_less_than_two_command() throws Exception{
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream console = System.out;
+        try {
+            System.setOut(new PrintStream(bytes));
+            App.main(new String[]{"justOneCommand"});
+        } finally {
+            System.setOut(console);
+        }
+        assertEquals(String.format("No command found.%s",EOL), bytes.toString());
     }
+
+
+
+    @Test
+    public void test_enter_not_valid_and_min_two_command() throws Exception{
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream console = System.out;
+        try {
+            System.setOut(new PrintStream(bytes));
+            App.main(new String[]{"firstCommand","secondCommand"});
+        } finally {
+            System.setOut(console);
+        }
+        assertEquals(String.format("Unsupported command : %s.%s","firstCommand",EOL), bytes.toString());
+    }
+
+
+
+    @Test
+    public void test_enter_auth_command_and_less_than_two_parameters() throws Exception{
+
+        exit.expectSystemExit();
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream console = System.out;
+        try {
+            System.setOut(new PrintStream(bytes));
+            App.main(new String[]{"auth","secondCommand"});
+        } finally {
+            System.setOut(console);
+        }
+        // assertThat(bytes.toString(), containsString("Invelid usage of 'auth' command."));
+    }
+
+
 }
